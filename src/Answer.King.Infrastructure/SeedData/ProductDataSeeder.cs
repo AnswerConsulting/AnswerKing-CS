@@ -1,10 +1,11 @@
-﻿using Answer.King.Domain.Repositories.Models;
+﻿using System.Linq;
+using Answer.King.Domain.Repositories.Models;
 
 namespace Answer.King.Infrastructure.SeedData;
 
 public class ProductDataSeeder : ISeedData
 {
-    public void SeedData(ILiteDbConnectionFactory connections)
+    public void SeedData(ILiteDbConnectionFactory connections, int maxEntries)
     {
         var db = connections.GetConnection();
         var collection = db.GetCollection<Product>();
@@ -17,7 +18,8 @@ public class ProductDataSeeder : ISeedData
         var none = collection.Count() < 1;
         if (none)
         {
-            collection.Insert(ProductData.Products);
+            var products = ProductData.Products.Take(maxEntries);
+            collection.Insert(products);
         }
 
         DataSeeded = true;

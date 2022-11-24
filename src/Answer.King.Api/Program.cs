@@ -86,7 +86,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Answer King API V1"));
 }
 
-app.UseLiteDb();
+app.UseLiteDb(1);
 app.UseHttpsRedirection();
 app.UseCors(corsAllowAnyPolicy);
 app.UseAuthorization();

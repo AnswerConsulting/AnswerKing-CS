@@ -1,10 +1,11 @@
-﻿using Answer.King.Domain.Orders;
+﻿using System.Linq;
+using Answer.King.Domain.Orders;
 
 namespace Answer.King.Infrastructure.SeedData;
 
 public class OrderDataSeeder : ISeedData
 {
-    public void SeedData(ILiteDbConnectionFactory connections)
+    public void SeedData(ILiteDbConnectionFactory connections, int maxEntries)
     {
         var db = connections.GetConnection();
         var collection = db.GetCollection<Order>();
@@ -17,7 +18,8 @@ public class OrderDataSeeder : ISeedData
         var none = collection.Count() < 1;
         if (none)
         {
-            collection.Insert(OrderData.Orders);
+            var orders = OrderData.Orders.Take(maxEntries);
+            collection.Insert(orders);
         }
 
         DataSeeded = true;

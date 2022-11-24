@@ -1,10 +1,11 @@
-﻿using Answer.King.Domain.Inventory;
+﻿using System.Linq;
+using Answer.King.Domain.Inventory;
 
 namespace Answer.King.Infrastructure.SeedData;
 
 public class CategoryDataSeeder : ISeedData
 {
-    public void SeedData(ILiteDbConnectionFactory connections)
+    public void SeedData(ILiteDbConnectionFactory connections, int maxEntries)
     {
         var db = connections.GetConnection();
         var collection = db.GetCollection<Category>();
@@ -17,7 +18,8 @@ public class CategoryDataSeeder : ISeedData
         var none = collection.Count() < 1;
         if (none)
         {
-            collection.Insert(CategoryData.Categories);
+            var categories = CategoryData.Categories.Take(maxEntries);
+            collection.Insert(categories);
         }
 
         DataSeeded = true;

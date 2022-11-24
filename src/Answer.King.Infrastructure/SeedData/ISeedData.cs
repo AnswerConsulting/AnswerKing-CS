@@ -2,5 +2,5 @@
 
 public interface ISeedData
 {
-    void SeedData(ILiteDbConnectionFactory connections);
+    void SeedData(ILiteDbConnectionFactory connections, int maxEntries);
 }

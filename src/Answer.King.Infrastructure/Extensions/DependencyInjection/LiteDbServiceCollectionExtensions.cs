@@ -18,12 +18,13 @@ public static class LiteDbServiceCollectionExtensions
         action(options);
 
         options.EntityMappers.ForEach(type => services.Add(ServiceDescriptor.Transient(typeof(IEntityMapping), type)));
+
         options.DataSeeders.ForEach(type => services.Add(ServiceDescriptor.Transient(typeof(ISeedData), type)));
 
         return services;
     }
 
-    public static IApplicationBuilder UseLiteDb(this IApplicationBuilder app)
+    public static IApplicationBuilder UseLiteDb(this IApplicationBuilder app, int maxEntries = int.MaxValue)
     {
         BsonMapper.Global.UseCamelCase();
 
@@ -48,7 +49,7 @@ public static class LiteDbServiceCollectionExtensions
         var seeders = app.ApplicationServices.GetServices<ISeedData>();
         foreach (var seedData in seeders)
         {
-            seedData.SeedData(connections);
+            seedData.SeedData(connections, maxEntries);
         }
 
         return app;
