@@ -80,7 +80,7 @@ public class ProductsControllerTests
     {
         // Arrange
         const long id = 1;
-        var products = new Product("name", "description", 1.99);
+        var products = new Product("name", "description", 1.99, new Category(1, "name", "description"));
         ProductService.GetProduct(Arg.Is(id)).Returns(products);
 
         // Act
