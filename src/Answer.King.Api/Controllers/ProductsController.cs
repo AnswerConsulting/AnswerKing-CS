@@ -1,4 +1,4 @@
-﻿using Answer.King.Api.Services;
+using Answer.King.Api.Services;
 using Answer.King.Domain.Repositories.Models;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
