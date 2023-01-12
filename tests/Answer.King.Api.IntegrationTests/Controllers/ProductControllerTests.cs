@@ -131,7 +131,7 @@ public class ProductControllerTests : WebFixtures
                     Price = 1.50,
                     Category = new CategoryId()
                     {
-                        Id = 3
+                        Id = 2
                     },
                 })
                 .ToUrl($"/api/products/{products?.Id}");
