@@ -28,6 +28,7 @@ internal static class ProductData
             Tags(2),
             false),
     };
+
     private static Category Category(long id)
     {
         return CategoryData.Categories.Where(c => c.Id == id)

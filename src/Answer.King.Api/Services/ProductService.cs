@@ -1,4 +1,4 @@
-﻿using Answer.King.Domain.Inventory.Models;
+using Answer.King.Domain.Inventory.Models;
 using Answer.King.Domain.Repositories;
 using Answer.King.Domain.Repositories.Models;
 
@@ -37,7 +37,7 @@ public class ProductService : IProductService
 
     public async Task<Product> CreateProduct(RequestModels.Product createProduct)
     {
-        var category = await this.Categories.Get(createProduct.Category.Id);
+        var category = await this.Categories.GetOne(createProduct.Category.Id);
 
         if (category == null)
         {
@@ -73,14 +73,14 @@ public class ProductService : IProductService
 
         if (product.Category.Id != updateProduct.Category.Id)
         {
-            var category = await this.Categories.Get(updateProduct.Category.Id);
+            var category = await this.Categories.GetOne(updateProduct.Category.Id);
 
             if (category == null)
             {
                 throw new ProductServiceException("The provided category is not valid.");
             }
 
-            var currentCategory = await this.Categories.Get(product.Category.Id);
+            var currentCategory = await this.Categories.GetOne(product.Category.Id);
 
             if (currentCategory == null)
             {
