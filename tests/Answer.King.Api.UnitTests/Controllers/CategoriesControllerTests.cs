@@ -3,7 +3,6 @@ using Answer.King.Api.Services;
 using Answer.King.Domain.Inventory;
 using Answer.King.Domain.Inventory.Models;
 using Answer.King.Test.Common.CustomAsserts;
-using Answer.King.Test.Common.CustomTraits;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -11,7 +10,6 @@ using Xunit;
 
 namespace Answer.King.Api.UnitTests.Controllers;
 
-[TestCategory(TestType.Unit)]
 public class CategoriesControllerTests
 {
     #region Setup
@@ -130,8 +128,7 @@ public class CategoriesControllerTests
         var result = await GetSubjectUnderTest.Post(categoryRequestModel);
 
         // Assert
-        Assert.Equal(categoryRequestModel.Name, categoryRequestModel.Name);
-        Assert.Equal(categoryRequestModel.Description, categoryRequestModel.Description);
+        await CategoryService.Received().CreateCategory(categoryRequestModel);
         Assert.IsType<CreatedAtActionResult>(result);
     }
 

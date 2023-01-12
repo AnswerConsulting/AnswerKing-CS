@@ -102,6 +102,29 @@ public class ProductsControllerTests
             nameof(ProductsController.Post));
     }
 
+    [Fact]
+    public async Task Post_ValidRequestCallsGetAction_ReturnsNewProduct()
+    {
+        // Arrange
+        var productRequestModel = new RequestModels.Product
+        {
+            Name = "PRODUCT_NAME",
+            Description = "PRODUCT_DESCRIPTION",
+            Price = 0,
+        };
+
+        var product = new Product("PRODUCT_NAME", "PRODUCT_DESCRIPTION", 0);
+
+        ProductService.CreateProduct(productRequestModel).Returns(product);
+
+        // Act
+        var result = await GetSubjectUnderTest.Post(productRequestModel);
+
+        // Assert
+        await ProductService.Received().CreateProduct(productRequestModel);
+        Assert.IsType<CreatedAtActionResult>(result);
+    }
+
     #endregion Post
 
     #region Put
