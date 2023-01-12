@@ -1,5 +1,4 @@
 using Answer.King.Api.Services;
-using Answer.King.Domain.Inventory;
 using Answer.King.Domain.Inventory.Models;
 using Answer.King.Domain.Repositories;
 using Answer.King.Domain.Repositories.Models;
@@ -7,6 +6,7 @@ using Answer.King.Infrastructure.Repositories.Mappings;
 using Answer.King.Test.Common.CustomTraits;
 using NSubstitute;
 using Xunit;
+using Category = Answer.King.Domain.Inventory.Category;
 
 namespace Answer.King.Api.UnitTests.Services;
 
@@ -267,35 +267,6 @@ public class CategoryServiceTests
     }
 
     [Fact]
-    public async Task UpdateCategory_RemoveProductRetired_ThrowsException()
-    {
-        // Arrange
-        var oldProduct = CreateProduct(1, "product", "desc", 1.0);
-        var oldProducts = new[]
-        {
-            oldProduct,
-        };
-        var oldCategory = CreateCategory(1, "category", "desc", new List<ProductId> { new(1) });
-
-        oldProduct.Retire();
-
-        this.categoryRepository.GetOne(Arg.Any<long>()).Returns(oldCategory);
-        this.productRepository.GetByCategoryId(oldCategory.Id).Returns(oldProducts);
-
-        var updatedCategory = new RequestModels.Category
-        {
-            Name = "updated category",
-            Description = "desc",
-            Products = new List<long>(),
-        };
-
-        // Act / Assert
-        var sut = this.GetServiceUnderTest();
-        await Assert.ThrowsAsync<ProductLifecycleException>(() =>
-            sut.UpdateCategory(oldCategory.Id, updatedCategory));
-    }
-
-    [Fact]
     public async Task UpdateCategory_ValidUpdatedProduct_UpdatesProductCorrectly()
     {
         // Arrange
@@ -338,7 +309,7 @@ public class CategoryServiceTests
 
     private static Product CreateProduct(long id, string name, string description, double price)
     {
-        return ProductFactory.CreateProduct(id, name, description, price, new List<CategoryId>(), new List<TagId>(), false);
+        return ProductFactory.CreateProduct(id, name, description, price, new Domain.Repositories.Models.Category(1, "name", "description"), new List<TagId>(), false);
     }
 
     #endregion

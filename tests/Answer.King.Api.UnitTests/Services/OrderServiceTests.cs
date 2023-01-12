@@ -7,7 +7,6 @@ using Answer.King.Test.Common.CustomTraits;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using Xunit;
-using CategoryId = Answer.King.Domain.Repositories.Models.CategoryId;
 using Order = Answer.King.Domain.Orders.Order;
 using Product = Answer.King.Domain.Repositories.Models.Product;
 using TagId = Answer.King.Domain.Repositories.Models.TagId;
@@ -60,12 +59,12 @@ public class OrderServiceTests
     public async Task CreateOrder_ValidOrderRequestRecieved_ReturnsOrder()
     {
         // Arrange
-        var categoryIds = new List<CategoryId> { new(1) };
+        var category = new Domain.Repositories.Models.Category(1, "name", "description");
         var tagIds = new List<TagId> { new(1) };
         var products = new[]
         {
-            ProductFactory.CreateProduct(1, "product 1", "desc", 2.0, categoryIds, tagIds, false),
-            ProductFactory.CreateProduct(2, "product 2", "desc", 4.0, categoryIds, tagIds, false),
+            ProductFactory.CreateProduct(1, "product 1", "desc", 2.0, category, tagIds, false),
+            ProductFactory.CreateProduct(2, "product 2", "desc", 4.0, category, tagIds, false),
         };
 
         var orderRequest = new RequestModels.Order
@@ -124,12 +123,12 @@ public class OrderServiceTests
         var order = new Order();
         this.orderRepository.GetOne(Arg.Any<long>()).Returns(order);
 
-        var categoryIds = new List<CategoryId> { new(1) };
+        var category = new Domain.Repositories.Models.Category(1, "name", "description");
         var tagIds = new List<TagId> { new(1) };
         var products = new[]
         {
-            ProductFactory.CreateProduct(1, "product 1", "desc", 2.0, categoryIds, tagIds, false),
-            ProductFactory.CreateProduct(2, "product 2", "desc", 4.0, categoryIds, tagIds, false),
+            ProductFactory.CreateProduct(1, "product 1", "desc", 2.0, category, tagIds, false),
+            ProductFactory.CreateProduct(2, "product 2", "desc", 4.0, category, tagIds, false),
         };
 
         var orderRequest = new RequestModels.Order
@@ -176,8 +175,8 @@ public class OrderServiceTests
 
         var products = new[]
         {
-            new Product("product 1", "desc", 2.0),
-            new Product("product 2", "desc", 4.0),
+            new Product("product 1", "desc", 2.0, new Domain.Repositories.Models.Category(1, "name", "description")),
+            new Product("product 2", "desc", 4.0, new Domain.Repositories.Models.Category(1, "name", "description")),
         };
 
         var orderRequest = new RequestModels.Order
